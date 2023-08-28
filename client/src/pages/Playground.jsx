@@ -13,7 +13,7 @@ export const Playground = () => {
 
   const runCode = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/execute", {
+      const response = await axios.post("https://corite-api.onrender.com/execute", {
         code,
       });
 

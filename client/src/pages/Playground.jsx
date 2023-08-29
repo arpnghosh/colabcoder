@@ -1,12 +1,32 @@
 import Editor from "@monaco-editor/react";
 import { FriendCard } from "../components/FriendCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import io from 'socket.io-client';
 
 export const Playground = () => {
   const [code, setCode] = useState(localStorage.getItem("jscode") || "");
   const [response, setResponse] = useState("");
-  const handleCodeChange = (newCode) => {
+
+  const socket =io();
+
+  useEffect(() => {
+    socket.on('update', (updatedText) => {
+      setCode(updatedText);
+    })
+
+    return () => {
+      socket.disconnect();
+    };
+  },[]);
+
+ let handleCodeChange = (event) => {
+    const newText = event.target.value;
+    setCode(newText);
+    socket.emit('edit', newText);
+  };
+
+     handleCodeChange = (newCode) => {
     setCode(newCode);
     localStorage.setItem("jscode", newCode);
   };

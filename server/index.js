@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import vm from "vm";
-
+import executeCode from "./controllers/executeCode.js";
 const app = express();
 const PORT = 3000;
 
@@ -16,38 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/execute", (req, res) => {
-  const { code } = req.body;
-
-  try {
-    const sandbox = {
-      console: {
-        log: (...args) => {
-          capturedConsole.push(
-            args.map((arg) => JSON.stringify(arg)).join(" ")
-          );
-        },
-      },
-      setTimeout,
-      clearTimeout,
-      setInterval,
-      clearInterval,
-    };
-
-    const capturedConsole = [];
-
-    const script = new vm.Script(code);
-    const context = new vm.createContext(sandbox);
-    script.runInContext(context);
-
-    res.json({ consoleOutput: capturedConsole });
-  } catch (error) {
-    console.error("Error while running code:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while executing the code." });
-  }
-});
+app.post("/execute", executeCode);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

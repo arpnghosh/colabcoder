@@ -17,9 +17,6 @@ export const Playground = () => {
         "https://corite-api.onrender.com/execute",
         {
           code,
-        },
-        {
-          withCredentials: true, 
         }
       );
 

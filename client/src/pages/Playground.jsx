@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { FriendCard } from "../components/FriendCard";
 import Editor from "@monaco-editor/react";
 import io from "socket.io-client";
 import axios from "axios";
-
 const socket = io("https://corite-api.onrender.com");
 
 export const Playground = () => {
@@ -61,7 +61,9 @@ export const Playground = () => {
           </div>
           <div className="row-span-1 h-full">
             {/* Content for the second row */}
-            <div className="flex justify-center"></div>
+            <div className="flex justify-center">
+            <FriendCard />
+            </div>
           </div>
         </div>
       </div>

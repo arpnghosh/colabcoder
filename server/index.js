@@ -1,24 +1,43 @@
+// server.js
 import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import bodyParser from "body-parser";
+import cors from "cors";
 import executeCode from "./controllers/executeCode.js";
-import genUUID from "./controllers/genUUID.js"
+import genUUID from "./controllers/genUUID.js";
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+app.use(cors());
+
 const PORT = 3000;
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
 app.post("/execute", executeCode);
 app.post("/invite", genUUID);
 
-app.listen(PORT, () => {
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+
+  socket.on("newcode", (newText) => {
+    socket.broadcast.emit("newcode", newText);
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

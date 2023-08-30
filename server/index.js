@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://colabcodertest.vercel.app",
+    origin: "https://colabcoder.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },

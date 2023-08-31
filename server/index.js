@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
@@ -33,8 +32,8 @@ io.on("connection", (socket) => {
     console.log("A user disconnected");
   });
 
-  socket.on("newcode", (newText) => {
-    socket.broadcast.emit("newcode", newText);
+  socket.on("newcode", (newCode) => {
+    socket.broadcast.emit("newcode", newCode);
   });
 });
 

@@ -6,18 +6,21 @@ import axios from "axios";
 const socket = io("https://corite-api.onrender.com");
 
 export const Playground = () => {
-  const [code, setCode] = useState(localStorage.getItem("jscode") || "");
-  const [response, setResponse] = useState("");
+  const [code, setCode] = useState(
+    localStorage.getItem("jscode") || 'console.log("welcome to colabcoder");'
+  );
+  const [response, setResponse] = useState("welcome to colabcoder");
 
   useEffect(() => {
-    socket.on("newcode", (newText) => {
-      setCode(newText);
-      localStorage.setItem("jscode", newText);
+    socket.on("newcode", (newCode) => {
+      setCode(newCode);
+      localStorage.setItem("jscode", newCode);
     });
   }, [code]);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
+    localStorage.setItem("jscode", newCode);
     socket.emit("newcode", newCode);
   };
 
@@ -57,12 +60,12 @@ export const Playground = () => {
             >
               Run Code
             </button>
-            <div className="mt-12 text-white">{JSON.stringify(response)}</div>
+            <div className="mt-12 text-white">{response}</div>
           </div>
           <div className="row-span-1 h-full">
             {/* Content for the second row */}
             <div className="flex justify-center">
-            <FriendCard />
+              <FriendCard />
             </div>
           </div>
         </div>

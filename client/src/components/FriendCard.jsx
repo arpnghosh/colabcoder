@@ -5,7 +5,7 @@ export const FriendCard = () => {
   const [roomID, setRoomID] = useState(null);
   const genCode = async () => {
     try {
-      const res = await axios.post("https://corite-api.onrender.com");
+      const res = await axios.post("https://corite-api.onrender.com/invite");
       const sessionID = await res.data.a;
 
       console.log(sessionID);

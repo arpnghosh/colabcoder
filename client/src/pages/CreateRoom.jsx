@@ -2,6 +2,9 @@ export const CreateRoom = () => {
   const createRoom = () => {
     window.location.href = "/playground";
   };
+  const joinRoom = () => {
+    window.location.href = "/join";
+  };
 
   return (
     <>
@@ -19,7 +22,7 @@ export const CreateRoom = () => {
             Create Room
           </button>
           <button
-            onClick={createRoom}
+            onClick={joinRoom}
             className=" bg-[#6537C8] rounded-sm h-10 w-60 font-medium"
           >
             Join Room

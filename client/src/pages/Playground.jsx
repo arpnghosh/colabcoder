@@ -7,9 +7,9 @@ const socket = io("https://corite-api.onrender.com");
 
 export const Playground = () => {
   const [code, setCode] = useState(
-    localStorage.getItem("jscode") || 'console.log("welcome to colabcoder");'
+    localStorage.getItem("jscode") || 'console.log("welcome to corite ✨");'
   );
-  const [response, setResponse] = useState("welcome to colabcoder");
+  const [response, setResponse] = useState("welcome to corite ✨");
 
   useEffect(() => {
     socket.on("newcode", (newCode) => {
@@ -26,9 +26,12 @@ export const Playground = () => {
 
   const runCode = async () => {
     try {
-      const response = await axios.post("https://corite-api.onrender.com/execute", {
-        code,
-      });
+      const response = await axios.post(
+        "https://corite-api.onrender.com/execute",
+        {
+          code,
+        }
+      );
 
       const result = response.data.consoleOutput;
       setResponse(result);
@@ -42,7 +45,7 @@ export const Playground = () => {
     <div className="flex flex-col lg:flex-row w-full min-h-screen">
       {/* Left Side */}
       <Editor
-        className="editor h-[50vh] lg:h-[100vh] bg-[#141b1e]"
+        className="editor h-[50vh] lg:h-[100vh]"
         language="javascript"
         theme="vs-dark"
         onChange={handleCodeChange}
@@ -50,19 +53,23 @@ export const Playground = () => {
       />
 
       {/* Right Side */}
-      <div className="lg:w-1/2 bg-[#141b1e]">
-        <div className="grid grid-rows-2 h-full">
-          <div className="row-span-1 flex flex-col items-center bg-[#232a2d] h-full">
+      <div className="lg:w-1/2 bg-[#05000F]">
+        <div className="grid grid-rows-2  h-full">
+          <div className="row-span-1 flex flex-col border-4 border-[#6537C8] items-center h-full">
             {/* Content for the first row */}
             <button
-              className="hover:bg-blue-700 duration-500 border-btnclr mt-8 bg-btnclr h-10 w-24 rounded-md text-white "
               onClick={runCode}
+              className=" bg-[#6537C8] text-white rounded-sm h-12 w-48 mt-12 font-roboto font-medium"
             >
               Run Code
             </button>
-            <div className="mt-12 text-white">{response}</div>
+            <div className="mt-12 text-xl font-bold flex flex-wrap justify-center items-center text-black h-64 w-80 rounded-sm bg-[#A58AE0]">
+              <div className="whitespace-normal break-all p-4 max-h-44 overflow-y-auto">
+                {response}
+              </div>
+            </div>
           </div>
-          <div className="row-span-1 h-full">
+          <div className="row-span-1 h-full border-4 border-[#6537C8]">
             {/* Content for the second row */}
             <div className="flex justify-center">
               <FriendCard />

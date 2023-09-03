@@ -23,7 +23,7 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 app.post("/execute", executeCode);
-app.post("/invite", genUUID);
+app.post("/createRoom", genUUID);
 
 io.on("connection", (socket) => {
   console.log("A user connected");

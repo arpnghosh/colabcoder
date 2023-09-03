@@ -1,6 +1,23 @@
+import axios from "axios";
+import { useState } from "react";
 export const CreateRoom = () => {
-  const createRoom = () => {
-    window.location.href = "/playground";
+
+  const [username, setUsername] = useState("")
+  
+  const handleUsername = (e) => {
+    setUsername(e.target.value)
+  }
+
+  const createRoom = async () => {
+    try {
+      const res = await axios.post("https://corite-api.onrender.com/createRoom");
+      const shareLink = res.data.roomUUID;
+      console.log(shareLink)
+      window.location.href = (`/playground?shareLink=${shareLink}`)
+    
+    } catch (error) {
+      console.log(error);
+    }
   };
   const joinRoom = () => {
     window.location.href = "/join";
@@ -14,6 +31,8 @@ export const CreateRoom = () => {
           <input
             className="bg-[#A58AE0] rounded-sm placeholder-black h-10 w-60 text-black font-medium font-roboto text-base text-center outline-none border-none transition"
             placeholder="Enter Name"
+            value={username}
+            onChange={handleUsername}
           />
           <button
             onClick={createRoom}

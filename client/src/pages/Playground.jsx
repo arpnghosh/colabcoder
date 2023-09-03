@@ -16,7 +16,7 @@ export const Playground = () => {
       setCode(newCode);
       localStorage.setItem("jscode", newCode);
     });
-  }, [code]);
+  }, []);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);

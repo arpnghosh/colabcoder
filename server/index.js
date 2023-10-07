@@ -8,7 +8,7 @@ import executeCode from "./controllers/executeCode.js";
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://colabcoder.vercel.app",
   methods: ["GET", "POST"],
   credentials: true,
 };
@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://colabcoder.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },

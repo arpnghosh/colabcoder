@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import axios from "axios";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://corite-api.onrender.com");
 
 export const Playground = () => {
   const { roomId } = useParams();
@@ -45,7 +45,7 @@ export const Playground = () => {
 
   const runCode = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/execute", {
+      const response = await axios.post("https://corite-api.onrender.com/execute", {
         code,
       });
 

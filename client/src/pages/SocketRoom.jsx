@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://corite-api.onrender.com");
 
 export const SocketRoom = () => {
   const [roomId, setRoomId] = useState("");

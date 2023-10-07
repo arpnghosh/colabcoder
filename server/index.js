@@ -1,42 +1,84 @@
+// server.mjs
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import bodyParser from "body-parser";
 import cors from "cors";
 import executeCode from "./controllers/executeCode.js";
-import genUUID from "./controllers/genUUID.js";
 
 const app = express();
+
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "https://colabcoder.vercel.app",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
-app.use(cors());
-
-const PORT = 3000;
-
-app.use(bodyParser.json());
+const rooms = new Map();
 
 app.post("/execute", executeCode);
-app.post("/createRoom", genUUID);
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log(`Socket connected: ${socket.id}`);
 
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+  // Join a room
+  socket.on("joinRoom", (roomId, callback) => {
+    socket.join(roomId);
+
+    socket.data.roomId = roomId;
+
+    if (!rooms.has(roomId)) {
+      rooms.set(roomId, []);
+    }
+
+    rooms.get(roomId).push(socket.id);
+
+    io.to(roomId).emit("roomUsers", rooms.get(roomId));
+
+    if (callback) {
+      callback(roomId);
+    }
+  });
+
+  // Leave a room
+  socket.on("leaveRoom", () => {
+    const roomId = socket.data.roomId;
+
+    if (rooms.has(roomId)) {
+      const index = rooms.get(roomId).indexOf(socket.id);
+      if (index !== -1) {
+        rooms.get(roomId).splice(index, 1);
+      }
+
+      io.to(roomId).emit("roomUsers", rooms.get(roomId));
+    }
+
+    socket.leave(roomId);
   });
 
   socket.on("newcode", (newCode) => {
-    socket.broadcast.emit("newcode", newCode);
+    const roomId = socket.data.roomId;
+    io.to(roomId).emit("newcode", newCode);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket disconnected: ${socket.id}`);
   });
 });
 
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

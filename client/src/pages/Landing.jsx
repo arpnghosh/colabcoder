@@ -23,7 +23,7 @@ export const Landing = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-6">
           <Link
-            to="/create"
+            to="/socketroom"
             className="py-2 text-center md:py-3  px-20 md:px-10 text-black text-base md:text-lg font-medium font-inter bg-white hover:bg-bcolor duration-500 rounded-full"
           >
             Get Started

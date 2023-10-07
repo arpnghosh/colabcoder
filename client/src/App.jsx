@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Landing } from "./pages/Landing";
 import { Playground } from "./pages/Playground";
-import { CreateRoom } from "./pages/CreateRoom";
-import { JoinRoom } from "./pages/JoinRoom";
+import { SocketRoom } from "./pages/SocketRoom";
 
 function App() {
   return (
@@ -11,8 +10,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/playground" element={<Playground />} />
-          <Route path="/create" element={<CreateRoom />} />
-          <Route path="/join" element={<JoinRoom />} />
+          <Route path="/playground/:roomId" element={<Playground />} />
+          <Route path="/socketroom" element={<SocketRoom />} />
         </Routes>
       </Router>
     </>

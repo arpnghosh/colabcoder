@@ -1,37 +1,53 @@
 import { useState, useEffect } from "react";
 import { FriendCard } from "../components/FriendCard";
 import Editor from "@monaco-editor/react";
+import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import axios from "axios";
-const socket = io("https://corite-api.onrender.com");
+
+const socket = io("http://localhost:3000");
 
 export const Playground = () => {
+  const { roomId } = useParams();
   const [code, setCode] = useState(
     localStorage.getItem("jscode") || 'console.log("welcome to corite ✨");'
   );
   const [response, setResponse] = useState("welcome to corite ✨");
 
+  // Join the room when the component mounts
+  useEffect(() => {
+    socket.emit("joinRoom", roomId);
+
+    return () => {
+      socket.emit("leaveRoom", roomId);
+    };
+  }, [roomId]);
+
+  // Listen for real-time code updates from other users
   useEffect(() => {
     socket.on("newcode", (newCode) => {
       setCode(newCode);
-      localStorage.setItem("jscode", newCode);
     });
+
+    return () => {
+      socket.off("newcode");
+    };
   }, []);
 
+  // Handle local code changes
   const handleCodeChange = (newCode) => {
     setCode(newCode);
     localStorage.setItem("jscode", newCode);
+
+    // Emit "newcode" event to notify other users
     socket.emit("newcode", newCode);
   };
 
   const runCode = async () => {
     try {
-      const response = await axios.post(
-        "https://corite-api.onrender.com/execute",
-        {
-          code,
-        }
-      );
+      const response = await axios.post("http://localhost:3000/execute", {
+        code,
+      });
 
       const result = response.data.consoleOutput;
       setResponse(result);
@@ -54,7 +70,7 @@ export const Playground = () => {
 
       {/* Right Side */}
       <div className="lg:w-1/2 bg-[#05000F]">
-        <div className="grid grid-rows-2  h-full">
+        <div className="grid grid-rows-2 h-full">
           <div className="row-span-1 flex flex-col border-4 border-[#6537C8] items-center h-full">
             {/* Content for the first row */}
             <button
@@ -80,3 +96,4 @@ export const Playground = () => {
     </div>
   );
 };
+ 

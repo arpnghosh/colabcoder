@@ -1,6 +1,6 @@
 <div align="center">
   <h1>colabcoder</h1>
-  <a href="https://github.com/arpnghosh/colabcoder/blob/main/LICENSE.md">
+  <a href="https://github.com/retrovoxel/colabcoder/blob/main/LICENSE.md">
     <img src="https://badgen.net/github/license/Naereen/Strapdown.js" alt="GitHub license" />
   </a>
 
@@ -14,7 +14,7 @@
  clone the repository:
 
    ```shell
-   git clone https://github.com/arpnghosh/colabcoder.git
+   git clone https://github.com/retrovoxel/colabcoder.git
    ```
 ### Client
    ```shell
@@ -31,8 +31,8 @@
 
 ## Contributing
 
-- [Open an issue](https://github.com/arpnghosh/colabcoder/issues) if you believe you've encountered a bug.
-- Make a [pull request](https://github.com/arpnghosh/colabcoder/pull) to add new features/make quality-of-life improvements/fix bugs.
+- [Open an issue](https://github.com/retrovoxel/colabcoder/issues) if you believe you've encountered a bug.
+- Make a [pull request](https://github.com/retrovoxel/colabcoder/pull) to add new features/make quality-of-life improvements/fix bugs.
   
  ## License
 This project is licensed under the [MIT License](LICENSE.md).
